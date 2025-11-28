@@ -1,19 +1,7 @@
-FROM tomcat:9.0
+FROM payara/server-full:5.2021.8
 
-# Remove default apps
-RUN rm -rf /usr/local/tomcat/webapps/*
+# Remove default apps (optional)
+RUN rm -rf $PAYARA_PATH/glassfish/domains/domain1/autodeploy/*
 
-# Copy WAR
-COPY target/EcommProj-1.0-SNAPSHOT.war /usr/local/tomcat/webapps/
-
-# Manually extract WAR
-RUN cd /usr/local/tomcat/webapps/ && \
-    jar -xf EcommProj-1.0-SNAPSHOT.war && \
-    mv WEB-INF ../ && mv * ../ROOT/ || true
-
-# Rename extracted folder to ROOT
-RUN mv /usr/local/tomcat/webapps/EcommProj-1.0-SNAPSHOT /usr/local/tomcat/webapps/ROOT || true
-
-EXPOSE 8080
-
-CMD ["catalina.sh", "run"]
+# Copy your WAR file into Payara deploy folder
+COPY target/EcommProj-1.0-SNAPSHOT.war $PAYARA_PATH/glassfish/domains/domain1/autodeploy/ROOT.war
