@@ -1,7 +1,7 @@
 FROM payara/server-full:5.2021.8
 
-# Remove default apps (optional)
-RUN rm -rf $PAYARA_PATH/glassfish/domains/domain1/autodeploy/*
+# Expose Payara HTTP port
+EXPOSE 8080
 
-# Copy your WAR file into Payara deploy folder
-COPY target/EcommProj-1.0-SNAPSHOT.war $PAYARA_PATH/glassfish/domains/domain1/autodeploy/ROOT.war
+# Copy WAR to Payara autodeploy folder
+COPY target/EcommProj-1.0-SNAPSHOT.war $DEPLOY_DIR
